@@ -1,0 +1,19 @@
+{
+  "name": "heya",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "type": "commonjs",
+  "scripts": {
+    "dev": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.12.2",
+    "electron": "^29.1.6",
+    "electron-vite": "^2.1.0",
+    "typescript": "^5.4.3"
+  }
+}
