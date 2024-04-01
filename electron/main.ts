@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from 'electron'
 import contextMenu from 'electron-context-menu'
-import path from 'node:path'
+import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 // The built directory structure
@@ -13,10 +13,9 @@ import { fileURLToPath } from 'node:url'
 // │ │ └── preload.js
 // │
 process.env.DIST = fileURLToPath(new URL('../dist', import.meta.url))
-process.env.VITE_PUBLIC = app.isPackaged ? process.env.DIST : path.join(process.env.DIST, '../public')
+process.env.VITE_PUBLIC = app.isPackaged ? process.env.DIST : join(process.env.DIST, '../public')
 
 
-let win: BrowserWindow | null
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
 const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
 
@@ -37,9 +36,9 @@ const dispose = contextMenu({
   showInspectElement: true
 })
 
-function createWindow() {
-  win = new BrowserWindow({
-    icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
+async function createWindow(): Promise<BrowserWindow> {
+  const win = new BrowserWindow({
+    icon: join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
     webPreferences: {
       preload: fileURLToPath(new URL('preload.cjs', import.meta.url)),
     },
@@ -47,15 +46,17 @@ function createWindow() {
 
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
-    win?.webContents.send('main-process-message', (new Date).toLocaleString())
+    win.webContents.send('main-process-message', (new Date).toLocaleString())
   })
 
   if (VITE_DEV_SERVER_URL) {
-    win.loadURL(VITE_DEV_SERVER_URL)
+    await win.loadURL(VITE_DEV_SERVER_URL)
   } else {
     // win.loadFile('dist/index.html')
-    win.loadFile(path.join(process.env.DIST, 'index.html'))
+    await win.loadFile(join(process.env.DIST, 'index.html'))
   }
+
+  return win;
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -64,17 +65,18 @@ function createWindow() {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
-    win = null
     dispose()
   }
 })
 
-app.on('activate', () => {
+app.on('activate', async () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow()
+    await createWindow()
   }
 })
 
-app.whenReady().then(createWindow)
+app.whenReady().then(async () => {
+  await createWindow()
+})
