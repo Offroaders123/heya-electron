@@ -1,13 +1,11 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+/* @refresh reload */
+import { render } from 'solid-js/web'
 import App from './App.tsx'
 import './index.css'
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+const root = document.getElementById('root')
+
+render(() => <App />, root!)
 
 // Use contextBridge
 window.ipcRenderer.on('main-process-message', (_event, message) => {
