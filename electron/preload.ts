@@ -1,33 +1,36 @@
-import { ipcRenderer, contextBridge, type IpcRenderer } from 'electron'
+import { ipcRenderer, contextBridge } from 'electron'
+
+const on: typeof ipcRenderer.on = (channel, listener) => {
+  return ipcRenderer.on(channel, (event, ...args) => listener(event, ...args))
+}
+const off: typeof ipcRenderer.off = (channel, listener, ...args) => {
+  return ipcRenderer.off(channel, listener, ...args)
+}
+const send: typeof ipcRenderer.send = (channel, ...args) => {
+  return ipcRenderer.send(channel, ...args)
+}
+const invoke: typeof ipcRenderer.invoke = (channel, ...args) => {
+  return ipcRenderer.invoke(channel, ...args)
+}
+
+const ipcRendererPublic = {
+  on,
+  off,
+  send,
+  invoke
+
+  // You can expose other APTs you need here.
+  // ...
+}
 
 declare global {
   interface Window {
     /**
      * Used in Renderer process, expose in `preload.ts`
      */
-    ipcRenderer: Pick<IpcRenderer, "on" | "off" | "send" | "invoke">
+    ipcRenderer: typeof ipcRendererPublic
   }
 }
 
 // --------- Expose some API to the Renderer process ---------
-contextBridge.exposeInMainWorld('ipcRenderer', {
-  on(...args: Parameters<typeof ipcRenderer.on>): Electron.IpcRenderer {
-    const [channel, listener] = args
-    return ipcRenderer.on(channel, (event, ...args) => listener(event, ...args))
-  },
-  off(...args: Parameters<typeof ipcRenderer.off>): Electron.IpcRenderer {
-    const [channel, ...omit] = args
-    return ipcRenderer.off(channel, ...omit)
-  },
-  send(...args: Parameters<typeof ipcRenderer.send>): void {
-    const [channel, ...omit] = args
-    return ipcRenderer.send(channel, ...omit)
-  },
-  invoke(...args: Parameters<typeof ipcRenderer.invoke>): Promise<any> {
-    const [channel, ...omit] = args
-    return ipcRenderer.invoke(channel, ...omit)
-  },
-
-  // You can expose other APTs you need here.
-  // ...
-})
+contextBridge.exposeInMainWorld('ipcRenderer', ipcRendererPublic)
