@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from 'electron'
 import contextMenu from 'electron-context-menu'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 // The built directory structure
 //
@@ -11,7 +12,7 @@ import path from 'node:path'
 // │ │ ├── main.js
 // │ │ └── preload.js
 // │
-process.env.DIST = path.join(__dirname, '../dist')
+process.env.DIST = fileURLToPath(new URL('../dist', import.meta.url))
 process.env.VITE_PUBLIC = app.isPackaged ? process.env.DIST : path.join(process.env.DIST, '../public')
 
 
@@ -40,7 +41,7 @@ function createWindow() {
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
+      preload: fileURLToPath(new URL('preload.cjs', import.meta.url)),
     },
   })
 

@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite'
-import path from 'node:path'
-import electron from 'vite-plugin-electron/simple'
+import electronPlugin from 'vite-plugin-electron/simple'
 import solid from 'vite-plugin-solid'
+
+const electron = electronPlugin as typeof import('vite-plugin-electron/simple').default;
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,13 +13,31 @@ export default defineConfig({
     solid(),
     electron({
       main: {
-        // Shortcut of `build.lib.entry`.
-        entry: 'electron/main.ts',
+        vite: {
+          build: {
+            lib: {
+              formats: ['es'],
+              entry: 'electron/main.ts',
+              fileName: () => 'main.js',
+            },
+          },
+        },
       },
       preload: {
-        // Shortcut of `build.rollupOptions.input`.
-        // Preload scripts may contain Web assets, so use the `build.rollupOptions.input` instead `build.lib.entry`.
-        input: path.join(__dirname, 'electron/preload.ts'),
+        input: 'electron/preload.ts',
+        vite: {
+          build: {
+            rollupOptions: {
+              output: {
+                format: 'cjs',
+                inlineDynamicImports: true,
+                entryFileNames: '[name].cjs',
+                chunkFileNames: '[name].cjs',
+                assetFileNames: '[name].[ext]',
+              },
+            },
+          },
+        },
       },
       // Ployfill the Electron and Node.js API for Renderer process.
       // If you want use Node.js in Renderer process, the `nodeIntegration` needs to be enabled in the Main process.

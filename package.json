@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist-electron/main.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
