@@ -1,6 +1,8 @@
 {
   "name": "heya-electron",
   "private": true,
+  "version": "1.0.0",
+  "description": "Looking into what is needed to make a modern Electron project nowadays.",
   "type": "module",
   "main": "./dist-electron/main.js",
   "scripts": {
@@ -8,6 +10,16 @@
     "dev": "vite",
     "preview": "vite preview"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Offroaders123/heya-electron.git"
+  },
+  "author": "Brandon Bennett <offroaders123@gmail.com> (https://github.com/Offroaders123)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Offroaders123/heya-electron/issues"
+  },
+  "homepage": "https://github.com/Offroaders123/heya-electron#readme",
   "dependencies": {
     "electron-context-menu": "^3.6.1",
     "solid-js": "^1.8.16"
