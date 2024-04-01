@@ -1,4 +1,13 @@
-import { ipcRenderer, contextBridge } from 'electron'
+import { ipcRenderer, contextBridge, type IpcRenderer } from 'electron'
+
+declare global {
+  interface Window {
+    /**
+     * Used in Renderer process, expose in `preload.ts`
+     */
+    ipcRenderer: Pick<IpcRenderer, "on" | "off" | "send" | "invoke">
+  }
+}
 
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld('ipcRenderer', {

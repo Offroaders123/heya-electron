@@ -5,6 +5,10 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
+    "types": [
+      "vite/client",
+      "vite-plugin-electron/electron-env.d.ts"
+    ],
     "noEmit": true,
     "skipLibCheck": true,
     "strict": true,

@@ -2,6 +2,7 @@ import { type UserConfig, defineConfig } from 'vite'
 import electronPlugin from 'vite-plugin-electron/simple'
 import solid from 'vite-plugin-solid'
 
+// @ts-expect-error - bugged typings for some reason
 const electron = electronPlugin as typeof import('vite-plugin-electron/simple').default;
 
 // https://vitejs.dev/config/

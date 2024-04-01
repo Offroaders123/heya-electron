@@ -3,15 +3,31 @@ import contextMenu from 'electron-context-menu'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-// The built directory structure
-//
-// ├─┬─┬ dist
-// │ │ └── index.html
-// │ │
-// │ ├─┬ dist-electron
-// │ │ ├── main.js
-// │ │ └── preload.js
-// │
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      /**
+       * The built directory structure
+       *
+       * ```tree
+       * ├─┬─┬ dist
+       * │ │ └── index.html
+       * │ │
+       * │ ├─┬ dist-electron
+       * │ │ ├── main.js
+       * │ │ └── preload.cjs
+       * │
+       * ```
+       */
+      DIST: string
+      /**
+       * /dist/ or /public/
+       */
+      VITE_PUBLIC: string
+    }
+  }
+}
+
 process.env.DIST = fileURLToPath(new URL('../dist', import.meta.url))
 process.env.VITE_PUBLIC = app.isPackaged ? process.env.DIST : join(process.env.DIST, '../public')
 
