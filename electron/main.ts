@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from 'electron'
+import contextMenu from 'electron-context-menu'
 import path from 'node:path'
 
 // The built directory structure
@@ -17,6 +18,23 @@ process.env.VITE_PUBLIC = app.isPackaged ? process.env.DIST : path.join(process.
 let win: BrowserWindow | null
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
 const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
+
+const dispose = contextMenu({
+  showLearnSpelling: true,
+  showLookUpSelection: true,
+  showSearchWithGoogle: true,
+  showSelectAll: true,
+  showCopyImage: true,
+  showCopyImageAddress: true,
+  showSaveImage: true,
+  showSaveImageAs: true,
+  showCopyVideoAddress: true,
+  showSaveVideo: true,
+  showSaveVideoAs: true,
+  showCopyLink: true,
+  showSaveLinkAs: true,
+  showInspectElement: true
+})
 
 function createWindow() {
   win = new BrowserWindow({
@@ -46,6 +64,7 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit()
     win = null
+    dispose()
   }
 })
 
