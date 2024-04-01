@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, shell } from 'electron'
 import contextMenu from 'electron-context-menu'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -58,6 +58,14 @@ async function createWindow(): Promise<BrowserWindow> {
     webPreferences: {
       preload: fileURLToPath(new URL('preload.cjs', import.meta.url)),
     },
+  })
+
+  win.webContents.setWindowOpenHandler(event => {
+    shell.openExternal(event.url)
+
+    return {
+      action: 'deny'
+    }
   })
 
   // Test active push message to Renderer-process.
