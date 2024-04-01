@@ -78,7 +78,8 @@ async function createWindow(): Promise<BrowserWindow> {
   } else {
     // win.loadFile('dist/index.html')
     // await win.loadFile(join(process.env.DIST, 'index.html'))
-    win.loadFile('index.html')
+    // win.loadFile('index.html')
+    await win.loadFile(join(process.env.DIST, 'index.html'))
   }
 
   return win;
