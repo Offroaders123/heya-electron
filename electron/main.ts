@@ -77,7 +77,8 @@ async function createWindow(): Promise<BrowserWindow> {
     await win.loadURL(VITE_DEV_SERVER_URL)
   } else {
     // win.loadFile('dist/index.html')
-    await win.loadFile(join(process.env.DIST, 'index.html'))
+    // await win.loadFile(join(process.env.DIST, 'index.html'))
+    win.loadFile('index.html')
   }
 
   return win;
