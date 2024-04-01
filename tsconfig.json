@@ -6,6 +6,7 @@
     "target": "ESNext",
     "isolatedModules": true,
     "noEmit": true,
+    "skipLibCheck": true,
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
