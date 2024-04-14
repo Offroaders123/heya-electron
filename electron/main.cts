@@ -1,39 +1,6 @@
 import { app, BrowserWindow, shell } from 'electron'
 import contextMenu from 'electron-context-menu'
 import { join } from 'node:path'
-import { fileURLToPath } from 'node:url'
-
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv {
-      /**
-       * The built directory structure
-       *
-       * ```tree
-       * ├─┬─┬ dist
-       * │ │ └── index.html
-       * │ │
-       * │ ├─┬ dist-electron
-       * │ │ ├── main.js
-       * │ │ └── preload.cjs
-       * │
-       * ```
-       */
-      DIST: string
-      /**
-       * /dist/ or /public/
-       */
-      VITE_PUBLIC: string
-    }
-  }
-}
-
-process.env.DIST = fileURLToPath(new URL('../dist', import.meta.url))
-process.env.VITE_PUBLIC = app.isPackaged ? process.env.DIST : join(process.env.DIST, '../public')
-
-
-// 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
-const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
 
 const dispose = contextMenu({
   showLearnSpelling: true,
@@ -54,9 +21,9 @@ const dispose = contextMenu({
 
 async function createWindow(): Promise<BrowserWindow> {
   const win = new BrowserWindow({
-    icon: join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
+    icon: join('./public/electron-vite.svg'),
     webPreferences: {
-      preload: fileURLToPath(new URL('preload.cjs', import.meta.url)),
+      preload: join(__dirname, 'preload.cjs'),
     },
   })
 
@@ -73,14 +40,7 @@ async function createWindow(): Promise<BrowserWindow> {
     win.webContents.send('main-process-message', (new Date).toLocaleString())
   })
 
-  if (VITE_DEV_SERVER_URL) {
-    await win.loadURL(VITE_DEV_SERVER_URL)
-  } else {
-    // win.loadFile('dist/index.html')
-    // await win.loadFile(join(process.env.DIST, 'index.html'))
-    // win.loadFile('index.html')
-    await win.loadFile(join(process.env.DIST, 'index.html'))
-  }
+  win.loadFile('index.html')
 
   return win;
 }

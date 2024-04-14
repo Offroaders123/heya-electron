@@ -4,11 +4,10 @@
   "version": "1.0.0",
   "description": "Looking into what is needed to make a modern Electron project nowadays.",
   "type": "module",
-  "main": "./dist-electron/main.js",
+  "main": "./build/main.cjs",
   "scripts": {
-    "build": "tsc && vite build && electron-builder",
-    "dev": "vite",
-    "preview": "vite preview"
+    "build": "tsc && esbuild ./src/index.tsx --bundle --outfile='./dist/index.js' && esbuild ./electron/main.cts --bundle --platform=node --packages=external --outfile='./build/main.cjs' && esbuild ./electron/preload.cts --bundle --platform=node --packages=external --outfile='./build/preload.cjs'",
+    "start": "electron ."
   },
   "repository": {
     "type": "git",
@@ -22,14 +21,14 @@
   "homepage": "https://github.com/Offroaders123/heya-electron#readme",
   "dependencies": {
     "electron-context-menu": "^3.6.1",
-    "solid-js": "^1.8.16"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/react": "^18.2.78",
+    "@types/react-dom": "^18.2.25",
     "electron": "29.1.6",
-    "electron-builder": "^24.13.3",
-    "typescript": "^5.4.3",
-    "vite": "^5.2.7",
-    "vite-plugin-electron": "^0.28.4",
-    "vite-plugin-solid": "^2.10.2"
+    "esbuild": "0.20.2",
+    "typescript": "^5.4.3"
   }
 }

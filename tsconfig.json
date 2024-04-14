@@ -3,12 +3,7 @@
     "module": "NodeNext",
     "target": "ESNext",
     "isolatedModules": true,
-    "jsx": "preserve",
-    "jsxImportSource": "solid-js",
-    "types": [
-      "vite/client",
-      "vite-plugin-electron/electron-env.d.ts"
-    ],
+    "jsx": "react-jsx",
     "noEmit": true,
     "skipLibCheck": true,
     "strict": true,
