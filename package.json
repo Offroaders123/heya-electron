@@ -6,7 +6,7 @@
   "type": "module",
   "main": "./build/main.cjs",
   "scripts": {
-    "build": "tsc && esbuild ./src/index.tsx --bundle --outfile='./dist/index.js' && esbuild ./electron/main.cts --bundle --platform=node --packages=external --outfile='./build/main.cjs' && esbuild ./electron/preload.cts --bundle --platform=node --packages=external --outfile='./build/preload.cjs'",
+    "build": "tsc && esbuild ./src/index.jsx --bundle --outfile='./dist/index.js' && esbuild ./electron/main.cjs --bundle --platform=node --packages=external --outfile='./build/main.cjs' && esbuild ./electron/preload.cjs --bundle --platform=node --packages=external --outfile='./build/preload.cjs'",
     "start": "electron ."
   },
   "repository": {
