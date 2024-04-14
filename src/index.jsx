@@ -2,9 +2,9 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 
-const root = document.getElementById('root')
+const root = /** @type {HTMLDivElement} */ (document.getElementById('root'))
 
-createRoot(root!).render(
+createRoot(root).render(
   <StrictMode>
     <App/>
   </StrictMode>

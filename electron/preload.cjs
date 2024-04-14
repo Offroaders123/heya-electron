@@ -1,18 +1,23 @@
 import { ipcRenderer, contextBridge } from 'electron'
 
-const on: typeof ipcRenderer.on = (channel, listener) => {
+/** @type {typeof ipcRenderer.on} */
+const on = (channel, listener) => {
   return ipcRenderer.on(channel, (event, ...args) => listener(event, ...args))
 }
-const off: typeof ipcRenderer.off = (channel, listener, ...args) => {
+/** @type {typeof ipcRenderer.off} */
+const off = (channel, listener, ...args) => {
   return ipcRenderer.off(channel, listener, ...args)
 }
-const send: typeof ipcRenderer.send = (channel, ...args) => {
+/** @type {typeof ipcRenderer.send} */
+const send = (channel, ...args) => {
   return ipcRenderer.send(channel, ...args)
 }
-const invoke: typeof ipcRenderer.invoke = (channel, ...args) => {
+/** @type {typeof ipcRenderer.invoke} */
+const invoke = (channel, ...args) => {
   return ipcRenderer.invoke(channel, ...args)
 }
 
+/** @type {IpcRendererPublic} */
 const ipcRendererPublic = {
   on,
   off,
@@ -21,15 +26,6 @@ const ipcRendererPublic = {
 
   // You can expose other APTs you need here.
   // ...
-}
-
-declare global {
-  interface Window {
-    /**
-     * Used in Renderer process, expose in `preload.ts`
-     */
-    ipcRenderer: typeof ipcRendererPublic
-  }
 }
 
 // --------- Expose some API to the Renderer process ---------

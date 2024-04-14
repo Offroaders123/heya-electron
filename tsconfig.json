@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
     "module": "NodeNext",
     "target": "ESNext",
     "isolatedModules": true,
     "jsx": "react-jsx",
     "noEmit": true,
-    "skipLibCheck": true,
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
@@ -13,5 +14,9 @@
     "allowUnreachableCode": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true
-  }
+  },
+  "include": [
+    "./src/**/*",
+    "./electron/**/*"
+  ]
 }

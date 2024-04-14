@@ -19,7 +19,10 @@ const dispose = contextMenu({
   showInspectElement: true
 })
 
-async function createWindow(): Promise<BrowserWindow> {
+/**
+ * @returns {Promise<BrowserWindow>}
+ */
+async function createWindow() {
   const win = new BrowserWindow({
     icon: join('./public/electron-vite.svg'),
     webPreferences: {
